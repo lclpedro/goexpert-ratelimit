@@ -1,0 +1,7 @@
+### IP Rules
+GET localhost:8080/
+
+
+### Token Rules
+GET localhost:8080/
+X-API-KEY: AAAAA
