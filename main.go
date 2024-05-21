@@ -39,7 +39,6 @@ func limitMiddleware(limiter *internal.RateLimiter) mux.MiddlewareFunc {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			identifier := getIdentifier(r)
 			limiter.SetRate(getRateLimit(identifier))
-			fmt.Println("Limiter:", limiter)
 			if !limiter.Allow(identifier) {
 				http.Error(w, "Limite de requisições excedido", http.StatusTooManyRequests)
 				return
@@ -60,7 +59,6 @@ func getIdentifier(r *http.Request) string {
 }
 
 func getRateLimit(identifier string) int64 {
-
 	tokensPermitted := os.Getenv("TOKENS_PERMITED")
 	tokens := strings.Split(tokensPermitted, "|")
 	if ok := slices.Contains(tokens, identifier); ok {
@@ -75,5 +73,6 @@ func getRateLimit(identifier string) int64 {
 
 func getExpirationTime() time.Duration {
 	expirationTime, _ := strconv.Atoi(os.Getenv("EXPIRATION_TIME"))
+	fmt.Println("Expiration Time:", time.Duration(expirationTime)*time.Second)
 	return time.Duration(expirationTime) * time.Second
 }

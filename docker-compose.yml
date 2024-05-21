@@ -3,10 +3,12 @@ version: "3.8"
 services:
   redis:
     image: redis:latest
+    container_name: redis-rateliter
     ports:
       - "6379:6379"
   app:
     build: .
+    container_name: app-rateliter
     ports:
       - "8080:8080"
     depends_on:
@@ -15,7 +17,7 @@ services:
       - .:/app
     environment:
       REDIS_ADDR: redis:6379
-      TOKEN_RATE_LIMIT: 3
-      IP_RATE_LIMIT: 5
+      TOKEN_RATE_LIMIT: 100
+      IP_RATE_LIMIT: 10
       TOKENS_PERMITED: AAAAA|BBBBB
-      EXPIRATION_TIME: 30 # Seconds
+      EXPIRATION_TIME: 5 # Seconds
